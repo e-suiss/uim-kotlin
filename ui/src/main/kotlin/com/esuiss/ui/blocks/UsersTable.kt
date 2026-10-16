@@ -81,6 +81,7 @@ import com.esuiss.ui.interactions.SelectionListScope
 import com.esuiss.ui.interactions.SelectionListTrigger
 import com.esuiss.ui.theme.Colors
 import com.esuiss.ui.theme.EsuissTheme
+import com.esuiss.ui.theme.Palette
 import com.esuiss.ui.theme.Radius
 import com.esuiss.ui.theme.Typography
 
@@ -97,23 +98,23 @@ private class TableUser(
 }
 
 private fun tableUsers() = listOf(
-    TableUser("Jamie Rivera", "jamie@company.com", "Admin", "Active", "2 min ago", 250),
-    TableUser("Morgan Lee", "morgan@company.com", "Editor", "Active", "1 hr ago", 30),
-    TableUser("Riley Chen", "riley@company.com", "Support", "Active", "Yesterday", 150),
-    TableUser("Taylor Kim", "taylor@company.com", "Viewer", "Suspended", "3 days ago", 200),
-    TableUser("Avery Brooks", "avery@company.com", "Editor", "Invited", "—", 330),
-    TableUser("Jordan Park", "jordan@company.com", "Support", "Active", "5 hr ago", 100),
+    TableUser("Jamie Rivera", "jamie@example.com", "Admin", "Active", "2 min ago", 250),
+    TableUser("Morgan Lee", "morgan@example.com", "Editor", "Active", "1 hr ago", 30),
+    TableUser("Riley Chen", "riley@example.com", "Support", "Active", "Yesterday", 150),
+    TableUser("Taylor Kim", "taylor@example.com", "Viewer", "Suspended", "3 days ago", 200),
+    TableUser("Avery Brooks", "avery@example.com", "Editor", "Invited", "—", 330),
+    TableUser("Jordan Park", "jordan@example.com", "Support", "Active", "5 hr ago", 100),
 )
 
 private val TableRoles = listOf("Admin", "Editor", "Support", "Viewer")
 
 private fun tableTint(colors: Colors, hue: Int): Color = when (hue) {
-    250 -> colors.indigo
-    30 -> colors.orange
-    150 -> colors.green
-    200 -> colors.blue
-    330 -> colors.pink
-    else -> colors.teal
+    250 -> Palette.indigo500
+    30 -> Palette.orange500
+    150 -> Palette.green500
+    200 -> Palette.blue500
+    330 -> Palette.pink500
+    else -> Palette.teal500
 }
 
 @Composable
@@ -180,7 +181,7 @@ fun UsersTable(
                     ) {
                         InputGroup(Modifier.semantics { contentDescription = "Search users" }) {
                             InputGroupAddon {
-                                Icon(PhosphorIcons.Regular.MagnifyingGlass, contentDescription = null, size = 16.dp, tint = colors.labelSecondary)
+                                Icon(PhosphorIcons.Regular.MagnifyingGlass, contentDescription = null, size = 16.dp, tint = colors.mutedForeground)
                             }
                             InputGroupInput(value = query, onValueChange = { query = it }, placeholder = "Search")
                         }
@@ -202,7 +203,7 @@ fun UsersTable(
                             Modifier
                                 .fillMaxWidth()
                                 .clip(RoundedCornerShape(Radius.xl2))
-                                .background(colors.surfaceSecondary),
+                                .background(colors.muted),
                         ) {
                             list.forEachIndexed { index, user ->
                                 key(user.email) {
@@ -212,7 +213,7 @@ fun UsersTable(
                                                 .padding(start = if (editing) 96.dp else 56.dp)
                                                 .fillMaxWidth()
                                                 .height(1.dp)
-                                                .background(colors.separator),
+                                                .background(colors.border),
                                         )
                                     }
                                     UserTableRow(user)
@@ -224,14 +225,14 @@ fun UsersTable(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(24.dp),
-                                    style = Typography.sm.copy(color = colors.labelSecondary, textAlign = TextAlign.Center),
+                                    style = Typography.sm.copy(color = colors.mutedForeground, textAlign = TextAlign.Center),
                                 )
                             }
                         }
                         BasicText(
                             if (selected.isNotEmpty()) "${selected.size} selected" else "Tap rows to select",
                             modifier = Modifier.padding(horizontal = 4.dp),
-                            style = Typography.xs.copy(color = colors.labelSecondary),
+                            style = Typography.xs.copy(color = colors.mutedForeground),
                         )
                     }
                 }
@@ -271,9 +272,9 @@ fun UsersTable(
 private fun SelectionListScope.UserTableRow(user: TableUser) {
     val colors = EsuissTheme.colors
     val status = when (user.status) {
-        "Suspended" -> colors.danger
-        "Invited" -> colors.labelSecondary
-        else -> colors.label
+        "Suspended" -> colors.destructive
+        "Invited" -> colors.mutedForeground
+        else -> colors.foreground
     }
     SelectionListItem(user.email, contentDescription = user.name) {
         Row(
@@ -300,19 +301,19 @@ private fun SelectionListScope.UserTableRow(user: TableUser) {
             ) {
                 BasicText(
                     user.name.split(" ").mapNotNull { it.firstOrNull() }.joinToString(""),
-                    style = Typography.xs3.copy(color = colors.onMedia, fontWeight = FontWeight.Medium),
+                    style = Typography.xs.copy(color = Palette.white, fontWeight = FontWeight.Medium),
                 )
             }
             Column(Modifier.weight(1f)) {
                 BasicText(
                     user.name,
-                    style = Typography.sm.copy(color = colors.label, fontWeight = FontWeight.SemiBold),
+                    style = Typography.sm.copy(color = colors.foreground, fontWeight = FontWeight.SemiBold),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
                 BasicText(
                     user.email,
-                    style = Typography.xs.copy(color = colors.labelSecondary),
+                    style = Typography.xs.copy(color = colors.mutedForeground),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -345,7 +346,7 @@ private fun AdminTabs(home: String, onNavigate: (String) -> Unit, content: @Comp
                     modifier = Modifier
                         .align(Alignment.Center)
                         .padding(32.dp),
-                    style = Typography.base.copy(color = colors.labelSecondary, textAlign = TextAlign.Center),
+                    style = Typography.base.copy(color = colors.mutedForeground, textAlign = TextAlign.Center),
                 )
             }
         }

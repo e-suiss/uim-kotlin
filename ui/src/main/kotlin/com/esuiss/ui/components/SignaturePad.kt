@@ -21,6 +21,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -77,7 +78,7 @@ fun List<SignatureStroke>.toPath(scale: Float = 1f): Path {
     return path
 }
 
-fun List<SignatureStroke>.toSvg(width: Float, height: Float, strokeWidth: Float = 3f, color: String = "#000000"): String {
+fun List<SignatureStroke>.toSvg(width: Float, height: Float, strokeWidth: Float = 2.5f, color: String = "#000000"): String {
     fun format(value: Float) = String.format(Locale.US, "%.1f", value)
     val paths = joinToString("") { stroke ->
         val points = stroke.points
@@ -102,7 +103,7 @@ fun List<SignatureStroke>.toImageBitmap(
     height: Dp,
     density: Density,
     color: Color = Color.Black,
-    strokeWidth: Dp = 3.dp,
+    strokeWidth: Dp = 2.5.dp,
     background: Color = Color.Transparent,
 ): ImageBitmap {
     val bitmap = with(density) { ImageBitmap(width.roundToPx().coerceAtLeast(1), height.roundToPx().coerceAtLeast(1)) }
@@ -125,7 +126,7 @@ fun SignaturePad(
     value: List<SignatureStroke>? = null,
     onValueChange: ((List<SignatureStroke>) -> Unit)? = null,
     defaultValue: List<SignatureStroke> = emptyList(),
-    strokeWidth: Dp = 3.dp,
+    strokeWidth: Dp = 2.5.dp,
     enabled: Boolean = true,
     placeholder: String = "Sign here",
     clearLabel: String = "Clear",
@@ -142,15 +143,16 @@ fun SignaturePad(
     val live = remember { mutableStateListOf<Offset>() }
     val empty = strokes.isEmpty() && live.isEmpty()
     val shape = RoundedCornerShape(Radius.xl)
-    val ink = if (enabled) colors.label else colors.labelQuaternary
-    val guide = colors.separatorStrong
+    val ink = colors.foreground
+    val guide = colors.input
     Box(
         modifier = modifier
             .fillMaxWidth()
             .height(200.dp)
+            .alpha(if (enabled) 1f else 0.5f)
             .clip(shape)
-            .background(if (enabled) colors.surface else colors.controlDisabled, shape)
-            .border(1.dp, colors.separator, shape)
+            .background(colors.background, shape)
+            .border(1.dp, colors.border, shape)
             .semantics {
                 contentDescription = "Signature pad"
                 stateDescription = if (strokes.isEmpty()) "Empty" else "Signed"
@@ -217,7 +219,7 @@ fun SignaturePad(
                         placeable.place(24.dp.roundToPx(), (constraints.maxHeight * 0.72f).toInt() + 8.dp.roundToPx())
                     }
                 },
-                style = Typography.sm.copy(color = colors.labelTertiary),
+                style = Typography.sm.copy(color = colors.mutedForeground),
             )
         }
         if (showClearButton && enabled && strokes.isNotEmpty()) {

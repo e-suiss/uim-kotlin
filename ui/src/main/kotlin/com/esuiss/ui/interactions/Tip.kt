@@ -44,11 +44,11 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathOperation
@@ -297,7 +297,7 @@ fun TipCard(
             TipSurface(
                 modifier = modifier
                     .fillMaxWidth()
-                    .background(colors.surfaceSecondary, shape),
+                    .background(colors.muted, shape),
                 content = content,
             )
         }
@@ -309,8 +309,8 @@ private fun TipProvider(context: TipContext, content: @Composable () -> Unit) {
     val colors = EsuissTheme.colors
     CompositionLocalProvider(
         LocalTip provides context,
-        LocalContentStyle provides Typography.base.copy(color = colors.label),
-        LocalContentColor provides colors.label,
+        LocalContentStyle provides Typography.base.copy(color = colors.foreground),
+        LocalContentColor provides colors.foreground,
         content = content,
     )
 }
@@ -337,8 +337,6 @@ fun TipAnchor(
 }
 
 private val TipArrow = 8.dp
-
-private val TipShadow = Shadow(0.dp, 12.dp, 24.dp, Color.Black.copy(alpha = 0.14f))
 
 @Stable
 private class TipPlacement {
@@ -509,9 +507,9 @@ fun TipPopover(
                         TipSurface(
                             modifier = modifier
                                 .fillMaxWidth()
-                                .shadow(TipShadow.copy(color = colors.label.copy(alpha = 0.14f)), shape)
-                                .background(colors.surfaceRaised, shape)
-                                .border(0.5.dp, colors.separatorStrong, shape)
+                                .shadow(Shadow(0.dp, 12.dp, 24.dp, colors.foreground.copy(alpha = 0.14f)), shape)
+                                .background(colors.popover, shape)
+                                .border(0.5.dp, colors.input, shape)
                                 .padding(
                                     top = if (resolved == PopupSide.Bottom) TipArrow else 0.dp,
                                     bottom = if (resolved == PopupSide.Top) TipArrow else 0.dp,
@@ -534,7 +532,7 @@ fun TipIcon(
 ) {
     Box(modifier = modifier) {
         CompositionLocalProvider(
-            LocalContentColor provides EsuissTheme.colors.accent,
+            LocalContentColor provides EsuissTheme.colors.primary,
             LocalIconSize provides 32.dp,
             content = content,
         )
@@ -558,7 +556,7 @@ fun TipTitle(text: String, modifier: Modifier = Modifier) {
     BasicText(
         text,
         modifier = modifier,
-        style = Typography.base.copy(color = EsuissTheme.colors.label, fontWeight = FontWeight.SemiBold),
+        style = Typography.base.copy(color = EsuissTheme.colors.foreground, fontWeight = FontWeight.SemiBold),
     )
 }
 
@@ -567,7 +565,7 @@ fun TipDescription(text: String, modifier: Modifier = Modifier) {
     BasicText(
         text,
         modifier = modifier,
-        style = Typography.sm.copy(color = EsuissTheme.colors.labelSecondary),
+        style = Typography.sm.copy(color = EsuissTheme.colors.mutedForeground),
     )
 }
 
@@ -584,7 +582,7 @@ fun TipClose(
         modifier = modifier
             .layoutId(TipCloseSlot)
             .size(32.dp)
-            .background(if (pressed) colors.itemPressed else Color.Transparent, CircleShape)
+            .alpha(if (pressed) 0.8f else 1f)
             .clickable(interactionSource = interaction, indication = null, role = Role.Button) { context.dismiss() }
             .semantics { this.contentDescription = contentDescription },
         contentAlignment = androidx.compose.ui.Alignment.Center,
@@ -593,7 +591,7 @@ fun TipClose(
             PhosphorIcons.Bold.X,
             contentDescription = null,
             size = 16.dp,
-            tint = if (pressed) colors.label else colors.labelSecondary,
+            tint = if (pressed) colors.foreground else colors.mutedForeground,
         )
     }
 }
