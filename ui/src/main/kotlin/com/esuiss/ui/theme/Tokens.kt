@@ -2,6 +2,7 @@ package com.esuiss.ui.theme
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Immutable
@@ -37,6 +38,12 @@ data class Colors(
     val sidebarAccentForeground: Color,
     val sidebarBorder: Color,
     val sidebarRing: Color,
+    val menu: Color,
+    val menuForeground: Color,
+    val menuMutedForeground: Color,
+    val menuAccent: Color,
+    val menuAccentForeground: Color,
+    val menuBorder: Color,
     val isDark: Boolean,
 )
 
@@ -72,6 +79,12 @@ val LightColors = Colors(
     sidebarAccentForeground = Color(0xFF1D1D1F),
     sidebarBorder = Color(0xFFD2D2D7),
     sidebarRing = Color(0xFF0071E3),
+    menu = Color(0xFFFFFFFF),
+    menuForeground = Color(0xFF1D1D1F),
+    menuMutedForeground = Color(0xFF6E6E73),
+    menuAccent = Color(0xFF000000).copy(alpha = 0.06f),
+    menuAccentForeground = Color(0xFF1D1D1F),
+    menuBorder = Color(0xFFD2D2D7),
     isDark = false,
 )
 
@@ -107,6 +120,12 @@ val DarkColors = Colors(
     sidebarAccentForeground = Color(0xFFF5F5F7),
     sidebarBorder = Color(0xFF424245),
     sidebarRing = Color(0xFF0071E3),
+    menu = Color(0xFF1D1D1F),
+    menuForeground = Color(0xFFF5F5F7),
+    menuMutedForeground = Color(0xFFA1A1A6),
+    menuAccent = Color(0xFFFFFFFF).copy(alpha = 0.1f),
+    menuAccentForeground = Color(0xFFF5F5F7),
+    menuBorder = Color(0xFF424245),
     isDark = true,
 )
 
@@ -144,18 +163,82 @@ object Radius {
 }
 
 object Typography {
-    val xs = textStyle(12.0, 16.0)
-    val sm = textStyle(14.0, 20.0)
-    val base = textStyle(16.0, 24.0)
-    val lg = textStyle(18.0, 28.0)
-    val xl = textStyle(20.0, 28.0)
-    val xl2 = textStyle(24.0, 32.0)
-    val xl3 = textStyle(30.0, 36.0)
+    val xs get() = textStyle(12.0, 16.0)
+    val sm get() = textStyle(14.0, 20.0)
+    val base get() = textStyle(16.0, 24.0)
+    val lg get() = textStyle(18.0, 28.0)
+    val xl get() = textStyle(20.0, 28.0)
+    val xl2 get() = textStyle(24.0, 32.0)
+    val xl3 get() = textStyle(30.0, 36.0)
 
-    val all = listOf(xs, sm, base, lg, xl, xl2, xl3)
+    val all get() = listOf(xs, sm, base, lg, xl, xl2, xl3)
+}
+
+object Fonts {
+    val sans: List<FontFile> = emptyList()
+    val heading: List<FontFile> = emptyList()
 }
 
 object Shadows {
     val md = Shadow(ShadowLayer(0.dp, 4.dp, 6.dp, (-1).dp, Color.Black.copy(alpha = 0.1f)), ShadowLayer(0.dp, 2.dp, 4.dp, (-2).dp, Color.Black.copy(alpha = 0.1f)))
     val lg = Shadow(ShadowLayer(0.dp, 10.dp, 15.dp, (-3).dp, Color.Black.copy(alpha = 0.1f)), ShadowLayer(0.dp, 4.dp, 6.dp, (-4).dp, Color.Black.copy(alpha = 0.1f)))
+}
+
+object Metrics {
+    object Radius {
+        val button = 9999.dp
+        val input = 10.dp
+        val textarea = 12.dp
+        val card = 18.dp
+        val dialog = 18.dp
+        val popover = 18.dp
+        val menu = 12.dp
+        val menuItem = 8.dp
+        val badge = 9999.dp
+        val checkbox = 4.dp
+        val tabs = 12.dp
+        val tabsTrigger = 8.dp
+        val toggle = 10.dp
+        val alert = 18.dp
+        val item = 12.dp
+    }
+
+    object Height {
+        val buttonXs = 24.dp
+        val buttonSm = 32.dp
+        val button = 36.dp
+        val buttonLg = 44.dp
+        val input = 44.dp
+    }
+
+    object PaddingX {
+        val buttonXs = 11.dp
+        val buttonSm = 12.dp
+        val button = 16.dp
+        val buttonLg = 22.dp
+        val input = 12.dp
+        val menuItem = 12.dp
+    }
+
+    object PaddingY {
+        val menuItem = 8.dp
+    }
+
+    object Padding {
+        val dialog = 24.dp
+        val popover = 16.dp
+        val menu = 6.dp
+    }
+
+    object Weight {
+        val button = FontWeight.Normal
+        val title = FontWeight.SemiBold
+    }
+
+    object Elevation {
+        val card = Shadow(ShadowLayer(0.dp, 4.dp, 6.dp, (-1).dp, Color.Black.copy(alpha = 0.1f)), ShadowLayer(0.dp, 2.dp, 4.dp, (-2).dp, Color.Black.copy(alpha = 0.1f)))
+        val dialog = Shadow(ShadowLayer(0.dp, 20.dp, 25.dp, (-5).dp, Color.Black.copy(alpha = 0.1f)), ShadowLayer(0.dp, 8.dp, 10.dp, (-6).dp, Color.Black.copy(alpha = 0.1f)))
+        val popover = Shadow(ShadowLayer(0.dp, 10.dp, 15.dp, (-3).dp, Color.Black.copy(alpha = 0.1f)), ShadowLayer(0.dp, 4.dp, 6.dp, (-4).dp, Color.Black.copy(alpha = 0.1f)))
+        val menu = Shadow(ShadowLayer(0.dp, 10.dp, 15.dp, (-3).dp, Color.Black.copy(alpha = 0.1f)), ShadowLayer(0.dp, 4.dp, 6.dp, (-4).dp, Color.Black.copy(alpha = 0.1f)))
+    }
 }

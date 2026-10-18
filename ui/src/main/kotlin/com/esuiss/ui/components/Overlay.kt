@@ -60,7 +60,6 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
@@ -79,6 +78,7 @@ import com.adamglin.phosphoricons.Regular
 import com.adamglin.phosphoricons.regular.X
 import com.esuiss.ui.theme.Colors
 import com.esuiss.ui.theme.EsuissTheme
+import com.esuiss.ui.theme.Metrics
 import com.esuiss.ui.theme.Palette
 import com.esuiss.ui.theme.Shadow
 import com.esuiss.ui.theme.Shadows
@@ -367,17 +367,26 @@ internal fun RegisterPaneTitle(text: String) {
     SideEffect { state?.value = text }
 }
 
-internal fun Modifier.raisedSurface(colors: Colors, shape: Shape, shadow: Shadow = Shadows.lg): Modifier =
+internal fun Modifier.raisedSurface(
+    colors: Colors,
+    shape: Shape,
+    shadow: Shadow = Shadows.lg,
+    menu: Boolean = false,
+): Modifier =
     this
         .shadow(shadow, shape)
         .clip(shape)
-        .background(colors.card, shape)
-        .border(1.dp, colors.foreground.copy(alpha = if (colors.isDark) 0.1f else 0.05f), shape)
+        .background(if (menu) colors.menu else colors.card, shape)
+        .border(
+            1.dp,
+            (if (menu) colors.menuForeground else colors.foreground).copy(alpha = if (colors.isDark) 0.1f else 0.05f),
+            shape,
+        )
 
 internal fun titleStyle(colors: Colors, style: TextStyle = Typography.base, centered: Boolean = false): TextStyle =
     style.copy(
         color = colors.foreground,
-        fontWeight = FontWeight.SemiBold,
+        fontWeight = Metrics.Weight.title,
         textAlign = if (centered) TextAlign.Center else TextAlign.Unspecified,
     )
 
